@@ -465,3 +465,93 @@ body[data-md-color-scheme="default"]::before {
   color: var(--md-typeset-a-color) !important;
   font-weight: 700;
 }
+
+/* =====================================================
+   流畅动画
+===================================================== */
+
+/* ---- 折叠框：平滑展开 / 收起（老浏览器自动退化为瞬间展开） ---- */
+@supports (interpolate-size: allow-keywords) {
+  details {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+      content-visibility 0.35s allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* 折叠框标题箭头旋转过渡 */
+.md-typeset details > summary::before,
+.md-typeset details > summary::after {
+  transition: transform 0.25s ease;
+}
+.md-typeset details > summary {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ---- 代码复制按钮 ---- */
+.md-code__button {
+  transition: transform 0.15s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.md-code__button:hover {
+  transform: scale(1.1);
+}
+.md-code__button:active {
+  transform: scale(0.9);
+}
+
+/* 复制成功：变绿 + 弹性跳动 */
+.md-code__button--active {
+  animation: code-copy-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #4ade80 !important;
+}
+@keyframes code-copy-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+[data-md-color-scheme="default"] .md-code__button--active {
+  color: #16a34a !important;
+}
+
+/* ---- 内容区淡入 ---- */
+.md-content__inner {
+  animation: content-fade-in 0.4s ease;
+}
+@keyframes content-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- 代码块 / 提示框 / 表格 过渡 ---- */
+.md-typeset pre > code {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.md-typeset .admonition {
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+.md-typeset .admonition:hover {
+  transform: translateY(-2px);
+}
+.md-typeset table tbody tr {
+  transition: background-color 0.18s ease;
+}
+.md-typeset a {
+  transition: color 0.18s ease;
+}
+
+/* ---- 尊重系统「减少动效」设置 ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
