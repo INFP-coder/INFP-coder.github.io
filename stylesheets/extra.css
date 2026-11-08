@@ -470,23 +470,7 @@ body[data-md-color-scheme="default"]::before {
    流畅动画
 ===================================================== */
 
-/* ---- 折叠框：平滑展开 / 收起（老浏览器自动退化为瞬间展开） ---- */
-@supports (interpolate-size: allow-keywords) {
-  details {
-    interpolate-size: allow-keywords;
-  }
-  details::details-content {
-    block-size: 0;
-    overflow-y: clip;
-    transition:
-      block-size 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
-      content-visibility 0.35s allow-discrete;
-  }
-  details[open]::details-content {
-    block-size: auto;
-  }
-}
-
+/* ---- 折叠框动画由 javascripts/details.js 负责（WAAPI 精确测量，更流畅） ---- */
 /* 折叠框标题箭头旋转过渡 */
 .md-typeset details > summary::before,
 .md-typeset details > summary::after {
@@ -554,4 +538,56 @@ body[data-md-color-scheme="default"]::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ---- 更多动画：全部只用 transform/opacity（GPU 合成，不触发重排，保证渲染速度） ---- */
+
+/* 图片 hover 微缩放 */
+.md-typeset img {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.md-typeset img:hover {
+  transform: scale(1.02);
+}
+
+/* 左侧导航链接 hover 右移 */
+.md-sidebar--primary .md-nav__link {
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.md-sidebar--primary .md-nav__link:hover {
+  transform: translateX(3px);
+}
+
+/* 右侧目录链接 hover 右移 */
+.md-sidebar--secondary .md-nav__link {
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.md-sidebar--secondary .md-nav__link:hover {
+  transform: translateX(2px);
+}
+
+/* 标签 tag hover 抬升 */
+.md-tag {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.md-tag:hover {
+  transform: translateY(-2px);
+}
+
+/* 顶栏 / 页脚图标按钮 hover 缩放 */
+.md-header__button,
+.md-footer__button {
+  transition: transform 0.15s ease, color 0.2s ease;
+}
+.md-header__button:hover,
+.md-footer__button:hover {
+  transform: scale(1.12);
+}
+
+/* 卡片（grid）hover 已在前面定义，补充普通按钮 */
+.md-typeset .md-button {
+  transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.md-typeset .md-button:hover {
+  transform: translateY(-1px);
 }
