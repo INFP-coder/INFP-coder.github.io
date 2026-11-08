@@ -28,18 +28,18 @@ function bindDetails(details) {
     if (details.open) {
       from = collapsed;
       to = full;
-      duration = 280;
+      duration = 450;
       details.__full = full;
     } else {
       from = details.__full || full;
       to = collapsed;
-      duration = 220;
+      duration = 340;
     }
 
     details.style.overflow = "hidden";
     const anim = details.animate(
       { height: [from + "px", to + "px"] },
-      { duration, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }
+      { duration, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
     );
     details.__anim = anim;
 
