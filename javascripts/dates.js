@@ -1,0 +1,1 @@
+window.WIKI_DATES = {"contest/index.md": "2026-11-08", "writing.md": "2026-11-08", "ds/线段树.md": "2026-11-07", "ds/index.md": "2026-11-07", "math/index.md": "2026-11-07", "dp/index.md": "2026-11-07", "string/index.md": "2026-11-07", "graph/index.md": "2026-11-07"};

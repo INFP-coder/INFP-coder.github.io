@@ -69,31 +69,48 @@ document$.subscribe(() => {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
-    for (const n of nodes) {
-      // 外圈光晕（柔和但不糊）
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const hot = (i === hover);
+      // 外圈光晕（hover 放大变亮，柔和但不糊）
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 9, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(122,162,247,0.18)';
+      ctx.arc(n.x, n.y, hot ? 14 : 9, 0, Math.PI * 2);
+      ctx.fillStyle = hot ? 'rgba(122,162,247,0.30)' : 'rgba(122,162,247,0.18)';
       ctx.fill();
       // 实心核心（清晰）
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 4.5, 0, Math.PI*2);
-      ctx.fillStyle = '#7aa2f7';
+      ctx.arc(n.x, n.y, hot ? 5.5 : 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = hot ? '#a8c4ff' : '#7aa2f7';
       ctx.fill();
       // 文字（清晰）
-      ctx.fillStyle = '#c0caf5';
-      ctx.font = '13px -apple-system, PingFang SC, sans-serif';
+      ctx.fillStyle = hot ? '#e0e6ff' : '#c0caf5';
+      ctx.font = (hot ? 'bold ' : '') + '13px -apple-system, PingFang SC, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(n.label, n.x, n.y - 16);
     }
   }
 
+  let hover = -1;
+  c.addEventListener('mousemove', (e) => {
+    const r = c.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    let h = -1;
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      if ((mx - n.x) ** 2 + (my - n.y) ** 2 < 16 ** 2) { h = i; break; }
+    }
+    if (h !== hover) {
+      hover = h;
+      c.style.cursor = h >= 0 ? 'pointer' : 'default';
+    }
+  });
+
   c.addEventListener('click', (e) => {
     const r = c.getBoundingClientRect();
     const mx = e.clientX - r.left, my = e.clientY - r.top;
     for (const n of nodes) {
-      if ((mx-n.x)**2 + (my-n.y)**2 < 12**2) {
+      if ((mx-n.x)**2 + (my-n.y)**2 < 16**2) {
         window.location.href = n.url;
         return;
       }

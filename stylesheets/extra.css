@@ -591,3 +591,59 @@ body[data-md-color-scheme="default"]::before {
 .md-typeset .md-button:hover {
   transform: translateY(-1px);
 }
+
+/* ===== 页面底部「最后更新」日期 ===== */
+.page-date {
+  margin-top: 2.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(122, 162, 247, 0.15);
+  color: var(--md-default-fg-color--lightest);
+  font-size: 0.75rem;
+  text-align: right;
+  opacity: 0.9;
+}
+[data-md-color-scheme="default"] .page-date {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ===== 站外链接：新窗口 + ↗ 标记 ===== */
+.ext-link::after {
+  content: " ↗";
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* ===== 图片点击放大（lightbox） ===== */
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.zoom-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.zoom-overlay img {
+  max-width: 92vw;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  transform: scale(0.96);
+  transition: transform 0.2s ease;
+}
+.zoom-overlay.open img {
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zoom-overlay,
+  .zoom-overlay img {
+    transition: none;
+  }
+}
