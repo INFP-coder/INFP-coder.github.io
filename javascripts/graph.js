@@ -20,7 +20,7 @@ document$.subscribe(() => {
     { label: '字符串', url: '/string/' },
     { label: '动态规划', url: '/dp/' },
     { label: '数论', url: '/math/' },
-    { label: '写作指南', url: '/guide/' },
+    { label: '写作模板', url: '/writing/' },
     { label: '归档', url: '/archive/' },
     { label: '标签', url: '/tags/' },
   ];
