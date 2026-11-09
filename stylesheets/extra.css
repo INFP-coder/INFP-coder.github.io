@@ -638,6 +638,29 @@ body[data-md-color-scheme="default"]::before {
   filter: brightness(0.9);
 }
 
+/* ===== 侧栏开关按钮 ===== */
+#sb-toggle {
+  color: var(--md-default-fg-color--light);
+}
+#sb-toggle:hover {
+  color: var(--md-typeset-a-color);
+  transform: scale(1.12);
+  transition: transform 0.15s ease, color 0.2s ease;
+}
+/* 桌面宽度：收起两侧竖栏，正文铺满 */
+@media screen and (min-width: 76.25em) {
+  html.sb-closed .md-sidebar--primary,
+  html.sb-closed .md-sidebar--secondary {
+    display: none !important;
+  }
+}
+/* 移动端侧栏本来就收在抽屉里，按钮不显示 */
+@media screen and (max-width: 76.234375em) {
+  #sb-toggle {
+    display: none;
+  }
+}
+
 /* ===== 图片点击放大（lightbox） ===== */
 .zoom-overlay {
   position: fixed;
