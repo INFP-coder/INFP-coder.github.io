@@ -4,8 +4,8 @@ function applySidebarState(closed) {
 }
 
 document$.subscribe(() => {
-  const actions = document.querySelector('.md-header__actions');
-  if (!actions || document.getElementById('sb-toggle')) return;
+  const inner = document.querySelector('.md-header__inner');
+  if (!inner || document.getElementById('sb-toggle')) return;
 
   const btn = document.createElement('button');
   btn.id = 'sb-toggle';
@@ -25,7 +25,7 @@ document$.subscribe(() => {
     try { localStorage.setItem('sb-closed', closed ? '1' : '0'); } catch (e) {}
   });
 
-  actions.prepend(btn);
+  inner.appendChild(btn);
 
   let closed = false;
   try { closed = localStorage.getItem('sb-closed') === '1'; } catch (e) {}
