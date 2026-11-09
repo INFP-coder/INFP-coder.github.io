@@ -425,19 +425,26 @@ body[data-md-color-scheme="default"]::before {
     radial-gradient(ellipse 50% 42% at 50% 100%, rgba(163,122,204,0.10), transparent),
     radial-gradient(circle 120px at var(--mx,50%) var(--my,50%), rgba(57,158,230,0.035), transparent 75%);
 }
-/* ===== 目录（右侧 TOC）：OI Wiki 同款 —— 纯文字、无框、无背景 ===== */
-.md-sidebar--secondary,
+/* ===== 目录（右侧 TOC）：磨砂玻璃面板，文字高亮 ===== */
 .md-sidebar--secondary .md-nav,
-.md-sidebar--secondary .md-nav--secondary,
-.md-sidebar--secondary .md-sidebar__scrollwrap {
+.md-sidebar--secondary .md-nav--secondary {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
+}
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  background: rgba(12, 14, 24, 0.5);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.6rem 0.9rem;
+  margin: 0.5rem 0.4rem;
+}
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__scrollwrap {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 16px rgba(30, 40, 60, 0.05);
 }
 .md-sidebar--secondary .md-nav__title {
   color: var(--md-default-fg-color--light);
@@ -457,7 +464,20 @@ body[data-md-color-scheme="default"]::before {
   font-weight: 700;
 }
 
-/* ===== 左侧导航栏：OI Wiki 同款 —— 纯文字，当前项高亮 ===== */
+/* ===== 左侧导航栏：磨砂玻璃面板，当前项高亮 ===== */
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  background: rgba(12, 14, 24, 0.5);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  margin: 0.5rem 0.4rem;
+}
+[data-md-color-scheme="default"] .md-sidebar--primary .md-sidebar__scrollwrap {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 16px rgba(30, 40, 60, 0.05);
+}
 .md-sidebar--primary .md-nav__item .md-nav__link {
   font-size: 0.72rem;
 }
@@ -611,6 +631,11 @@ body[data-md-color-scheme="default"]::before {
   content: " ↗";
   font-size: 0.85em;
   opacity: 0.7;
+}
+
+/* ===== 深色模式：白底图片降亮度，避免刺眼 ===== */
+[data-md-color-scheme="slate"] .md-typeset img:not(.about-avatar) {
+  filter: brightness(0.9);
 }
 
 /* ===== 图片点击放大（lightbox） ===== */

@@ -13,16 +13,16 @@ document$.subscribe(() => {
   ctx.scale(dpr, dpr);
 
   const nodes = [
-    { label: 'OI', url: '/' },
-    { label: '数据结构', url: '/ds/' },
-    { label: '线段树', url: '/ds/线段树/' },
-    { label: '图论', url: '/graph/' },
-    { label: '字符串', url: '/string/' },
-    { label: '动态规划', url: '/dp/' },
-    { label: '数论', url: '/math/' },
-    { label: '写作模板', url: '/writing/' },
-    { label: '归档', url: '/archive/' },
-    { label: '标签', url: '/tags/' },
+    { label: 'OI', url: '/', color: '#7aa2f7' },
+    { label: '数据结构', url: '/ds/', color: '#7aa2f7' },
+    { label: '线段树', url: '/ds/线段树/', color: '#7aa2f7' },
+    { label: '图论', url: '/graph/', color: '#7dcfff' },
+    { label: '字符串', url: '/string/', color: '#9ece6a' },
+    { label: '动态规划', url: '/dp/', color: '#ff9e64' },
+    { label: '数论', url: '/math/', color: '#bb9af7' },
+    { label: '写作模板', url: '/writing/', color: '#e0af68' },
+    { label: '归档', url: '/archive/', color: '#565f89' },
+    { label: '标签', url: '/tags/', color: '#89ddff' },
   ];
   const edges = [[0,1],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[1,2]];
 
@@ -72,15 +72,17 @@ document$.subscribe(() => {
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
       const hot = (i === hover);
-      // 外圈光晕（hover 放大变亮，柔和但不糊）
+      // 外圈光晕（hover 放大变亮，按分类配色，柔和但不糊）
+      ctx.globalAlpha = hot ? 0.30 : 0.18;
       ctx.beginPath();
       ctx.arc(n.x, n.y, hot ? 14 : 9, 0, Math.PI * 2);
-      ctx.fillStyle = hot ? 'rgba(122,162,247,0.30)' : 'rgba(122,162,247,0.18)';
+      ctx.fillStyle = n.color;
       ctx.fill();
+      ctx.globalAlpha = 1;
       // 实心核心（清晰）
       ctx.beginPath();
       ctx.arc(n.x, n.y, hot ? 5.5 : 4.5, 0, Math.PI * 2);
-      ctx.fillStyle = hot ? '#a8c4ff' : '#7aa2f7';
+      ctx.fillStyle = n.color;
       ctx.fill();
       // 文字（清晰）
       ctx.fillStyle = hot ? '#e0e6ff' : '#c0caf5';
