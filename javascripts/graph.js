@@ -61,13 +61,16 @@ document$.subscribe(() => {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    // 连线按源节点配色，低透明度
     for (const [i,j] of edges) {
       ctx.beginPath();
       ctx.moveTo(nodes[i].x, nodes[i].y);
       ctx.lineTo(nodes[j].x, nodes[j].y);
-      ctx.strokeStyle = 'rgba(122,162,247,0.35)';
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = nodes[i].color;
       ctx.lineWidth = 1;
       ctx.stroke();
+      ctx.globalAlpha = 1;
     }
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
@@ -96,7 +99,9 @@ document$.subscribe(() => {
   let hover = -1;
   c.addEventListener('mousemove', (e) => {
     const r = c.getBoundingClientRect();
-    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    // 画布可能被 CSS 缩放过（手机窄屏），坐标按比例换算回 720x360
+    const mx = (e.clientX - r.left) * (W / r.width);
+    const my = (e.clientY - r.top) * (H / r.height);
     let h = -1;
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
@@ -110,7 +115,8 @@ document$.subscribe(() => {
 
   c.addEventListener('click', (e) => {
     const r = c.getBoundingClientRect();
-    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    const mx = (e.clientX - r.left) * (W / r.width);
+    const my = (e.clientY - r.top) * (H / r.height);
     for (const n of nodes) {
       if ((mx-n.x)**2 + (my-n.y)**2 < 16**2) {
         window.location.href = n.url;

@@ -612,18 +612,33 @@ body[data-md-color-scheme="default"]::before {
   transform: translateY(-1px);
 }
 
-/* ===== 页面底部「最后更新」日期 ===== */
+/* ===== 页面底部「最后更新」：渐变分隔线居中 ===== */
 .page-date {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
   margin-top: 2.5rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid rgba(122, 162, 247, 0.15);
   color: var(--md-default-fg-color--lightest);
   font-size: 0.75rem;
-  text-align: right;
   opacity: 0.9;
 }
-[data-md-color-scheme="default"] .page-date {
-  border-top-color: rgba(0, 0, 0, 0.08);
+.page-date::before,
+.page-date::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+}
+.page-date::before {
+  background: linear-gradient(90deg, transparent, rgba(122, 162, 247, 0.4));
+}
+.page-date::after {
+  background: linear-gradient(90deg, rgba(122, 162, 247, 0.4), transparent);
+}
+[data-md-color-scheme="default"] .page-date::before {
+  background: linear-gradient(90deg, transparent, rgba(57, 158, 230, 0.4));
+}
+[data-md-color-scheme="default"] .page-date::after {
+  background: linear-gradient(90deg, rgba(57, 158, 230, 0.4), transparent);
 }
 
 /* ===== 站外链接：新窗口 + ↗ 标记 ===== */
@@ -694,4 +709,267 @@ body[data-md-color-scheme="default"]::before {
   .zoom-overlay img {
     transition: none;
   }
+}
+
+/* =====================================================
+   设计升级（2026-11-10）：极光 Hero / 数据胶囊 / 指示条 / 玻璃细节
+===================================================== */
+
+/* ---- Hero：慢速旋转极光光晕 ---- */
+.hero { position: relative; }
+.hero > * { position: relative; z-index: 1; }
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(520px, 100vw);
+  height: min(520px, 100vw);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(122, 162, 247, 0.16),
+    rgba(187, 154, 247, 0.10),
+    rgba(42, 195, 222, 0.16),
+    rgba(122, 162, 247, 0.16)
+  );
+  filter: blur(60px);
+  animation: hero-halo-spin 26s linear infinite;
+}
+[data-md-color-scheme="default"] .hero::before {
+  background: conic-gradient(
+    from 0deg,
+    rgba(57, 158, 230, 0.16),
+    rgba(255, 153, 64, 0.12),
+    rgba(163, 122, 204, 0.16),
+    rgba(57, 158, 230, 0.16)
+  );
+}
+@keyframes hero-halo-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ---- Hero：渐变副标题 ---- */
+.hero .subtitle {
+  background: linear-gradient(90deg, var(--hero-c1), var(--hero-c2), var(--hero-c3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Hero：数据胶囊 ---- */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+.hero-stat {
+  display: inline-flex;
+  align-items: baseline;
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--md-default-fg-color--light);
+  border: 1px solid rgba(122, 162, 247, 0.22);
+  background: rgba(122, 162, 247, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero-stat b {
+  color: var(--md-typeset-a-color);
+  font-weight: 700;
+}
+[data-md-color-scheme="default"] .hero-stat {
+  border-color: rgba(57, 158, 230, 0.22);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ---- 右侧目录：当前项渐变指示条 ---- */
+.md-sidebar--secondary .md-nav__link {
+  position: relative;
+}
+.md-sidebar--secondary .md-nav__link--active::before {
+  content: "";
+  position: absolute;
+  left: -0.62rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 1.05em;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #7aa2f7, #bb9af7);
+}
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--active::before {
+  background: linear-gradient(180deg, #399EE6, #A37ACC);
+}
+
+/* ---- 代码块文件名条：着色 + 彩色圆点 ---- */
+.highlight .filename {
+  background: rgba(122, 162, 247, 0.05);
+  border-bottom-color: rgba(122, 162, 247, 0.16);
+}
+.highlight .filename::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7aa2f7, #2ac3de);
+  vertical-align: 1px;
+}
+[data-md-color-scheme="default"] .highlight .filename {
+  background: rgba(57, 158, 230, 0.05);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ---- 首页关系图：玻璃面板 + 响应式 ---- */
+.graph-wrap {
+  border: 1px solid rgba(122, 162, 247, 0.14);
+  border-radius: 14px;
+  background: rgba(122, 162, 247, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.4rem;
+}
+.graph-wrap canvas {
+  display: block;
+  max-width: 100%;
+  height: auto !important;
+  aspect-ratio: 2 / 1;
+}
+[data-md-color-scheme="default"] .graph-wrap {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- 左侧导航：悬停胶囊 ---- */
+.md-sidebar--primary .md-nav__link {
+  border-radius: 8px;
+}
+.md-sidebar--primary .md-nav__link:hover {
+  background: rgba(122, 162, 247, 0.07);
+}
+[data-md-color-scheme="default"] .md-sidebar--primary .md-nav__link:hover {
+  background: rgba(57, 158, 230, 0.06);
+}
+
+/* ---- 公告栏：玻璃 ---- */
+.md-banner {
+  background: rgba(12, 14, 24, 0.35) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+[data-md-color-scheme="default"] .md-banner {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ---- 页脚：渐变发丝线 ---- */
+.md-footer {
+  position: relative;
+}
+.md-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(122, 162, 247, 0.5), rgba(42, 195, 222, 0.5), transparent);
+}
+
+/* ---- 页脚上下篇：玻璃按钮 ---- */
+.md-footer__link {
+  border: 1px solid rgba(122, 162, 247, 0.14);
+  border-radius: 12px;
+  padding: 0.55rem 0.9rem;
+  background: rgba(122, 162, 247, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.md-footer__link:hover {
+  border-color: rgba(122, 162, 247, 0.45);
+  transform: translateY(-2px);
+}
+[data-md-color-scheme="default"] .md-footer__link {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- 回到顶部：悬浮玻璃胶囊 ---- */
+.md-top {
+  background: rgba(12, 14, 24, 0.55) !important;
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: #c0caf5 !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+.md-top:hover {
+  background: rgba(122, 162, 247, 0.2) !important;
+  color: #e0e6ff !important;
+}
+[data-md-color-scheme="default"] .md-top {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #4A4F57 !important;
+  box-shadow: 0 6px 24px rgba(30, 40, 60, 0.15);
+}
+
+/* ---- 404 页 ---- */
+.err-404-wrap {
+  text-align: center;
+  padding: 2.5rem 0 3rem;
+}
+.err-404 {
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, #7aa2f7, #bb9af7, #2ac3de);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-md-color-scheme="default"] .err-404 {
+  background: linear-gradient(120deg, #399EE6, #FF9940, #A37ACC);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.err-sub {
+  color: var(--md-default-fg-color--light);
+  margin: 0.8rem 0 1.6rem;
+}
+.err-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.err-btn {
+  display: inline-block;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 162, 247, 0.3);
+  background: rgba(122, 162, 247, 0.08);
+  color: var(--md-typeset-a-color) !important;
+  font-size: 0.85rem;
+  transition: transform 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.err-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(122, 162, 247, 0.6);
+  background: rgba(122, 162, 247, 0.14);
+  text-shadow: none !important;
+}
+[data-md-color-scheme="default"] .err-btn {
+  border-color: rgba(57, 158, 230, 0.3);
+  background: rgba(255, 255, 255, 0.7);
 }

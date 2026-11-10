@@ -641,13 +641,15 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 — 页面不存在</h1>
-  <p>这个页面可能被移动、改名了，或者链接写错了。去这些地方找找：</p>
-  <ul>
-    <li><a href="/.">🏠 回到首页</a></li>
-    <li><a href="/archive.md">🗂 归档</a></li>
-    <li><a href="/tags.md">🏷 标签</a></li>
-  </ul>
+  <div class="err-404-wrap">
+    <div class="err-404">404</div>
+    <p class="err-sub">页面不存在——可能被移动、改名了，或者链接写错了。</p>
+    <div class="err-links">
+      <a class="err-btn" href="/.">🏠 回到首页</a>
+      <a class="err-btn" href="/archive.md">🗂 归档</a>
+      <a class="err-btn" href="/tags.md">🏷 标签</a>
+    </div>
+  </div>
 
               </article>
             </div>
@@ -736,6 +738,10 @@
         <script src="/javascripts/zoom.js"></script>
       
         <script src="/javascripts/sidebar.js"></script>
+      
+        <script src="/javascripts/stats.js"></script>
+      
+        <script src="/javascripts/stats-view.js"></script>
       
     
   </body>
