@@ -16,7 +16,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../%E6%9C%80%E5%A4%A7%E6%95%B0/">
+        <link rel="next" href="../../graph/">
       
       
         
@@ -320,8 +320,6 @@
       
         
       
-        
-      
     
     
     
@@ -510,38 +508,60 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#p1198-jsoi2008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1198 [JSOI2008] 最大数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P1198 [JSOI2008] 最大数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        易错点（亲测踩坑）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../%E6%9C%80%E5%A4%A7%E6%95%B0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    最大数
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -866,6 +886,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#p1198-jsoi2008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1198 [JSOI2008] 最大数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P1198 [JSOI2008] 最大数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        易错点（亲测踩坑）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        代码实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1141,6 +1211,123 @@ g(a)=\frac{2^{k+2}-2^{\left\lfloor\frac{k}{2}\right\rfloor+1}-1}
 <a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="p1198-jsoi2008">P1198 [JSOI2008] 最大数<a class="headerlink" href="#p1198-jsoi2008" title="此段链接">&para;</a></h2>
+<p>线段树的第二副面孔：把「区间求和」换成「区间最大值」，并且数列是<strong>动态增长</strong>的——一开始为空，只在末尾插入。</p>
+<details class="note">
+<summary>题意</summary>
+<p>维护一个初始为空的数列，两种操作：</p>
+<ul>
+<li><code>Q L</code>：输出末尾 <span class="arithmatex">\(L\)</span> 个数中的最大值（<span class="arithmatex">\(L&gt;0\)</span> 且不超过当前长度）；</li>
+<li><code>A n</code>：把 <span class="arithmatex">\((n+t)\bmod D\)</span> 插入末尾，其中 <span class="arithmatex">\(t\)</span> 是上一次查询的答案（没查过则 <span class="arithmatex">\(t=0\)</span>）。</li>
+</ul>
+<p>保证 <span class="arithmatex">\(1\le M\le 2\times 10^5\)</span>，<span class="arithmatex">\(1\le D\le 2\times 10^9\)</span>，<span class="arithmatex">\(n\)</span> 可能为负数。</p>
+</details>
+<h3 id="_6">思路<a class="headerlink" href="#_6" title="此段链接">&para;</a></h3>
+<p>与 P3374 的区别只有三处，其余骨架一行不动：</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>P3374 求和</th>
+<th>P1198 最大值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>叶子</td>
+<td><code>t[id]+=k</code>（加）</td>
+<td><code>t[id]=k</code>（赋值）</td>
+</tr>
+<tr>
+<td>合并</td>
+<td><code>t[id]=t[lc]+t[rc]</code></td>
+<td><code>t[id]=max(t[lc],t[rc])</code></td>
+</tr>
+<tr>
+<td>查询初值</td>
+<td><code>ans=0</code></td>
+<td><code>ans=LLONG_MIN</code></td>
+</tr>
+</tbody>
+</table>
+<p>另外两个要点：</p>
+<ol>
+<li><strong>插入只发生在末尾</strong>：总插入次数不超过 <span class="arithmatex">\(M\)</span>，提前开 <span class="arithmatex">\(M\)</span> 个位置，空位全部设成 <span class="arithmatex">\(-\infty\)</span>（不参与最大值比较），之后只用单点赋值，<strong>绝不每次重建</strong>（每次重建是 <span class="arithmatex">\(O(m^2)\)</span>，会 TLE）。</li>
+<li><strong>负数取模</strong>：C++ 负数取模结果仍为负，答案必须落在 <span class="arithmatex">\([0,D)\)</span>：</li>
+</ol>
+<div class="language-cpp highlight"><span class="filename">负数取模</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="n">input</span><span class="o">%</span><span class="n">d</span><span class="o">+</span><span class="n">t1</span><span class="p">)</span><span class="o">%</span><span class="n">d</span><span class="p">;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">+=</span><span class="n">d</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="_7">易错点（亲测踩坑）<a class="headerlink" href="#_7" title="此段链接">&para;</a></h3>
+<ul>
+<li>数组开成 <code>M&gt;&gt;2</code>（<span class="arithmatex">\(M\div4\)</span>）而非 <code>M&lt;&lt;2</code>（4 倍空间）→ RE</li>
+<li>build 左儿子写 <code>(1,mid)</code> 而非 <code>(l,mid)</code> → 区间错乱、编号爆炸 → RE</li>
+<li>存值存原始 <code>input</code> 而非算好的 <code>x</code> → WA</li>
+<li>每次查询 <code>build(1,1,cnt)</code> 重建整棵树 → TLE</li>
+</ul>
+<h3 id="_8">代码实现<a class="headerlink" href="#_8" title="此段链接">&para;</a></h3>
+<div class="language-cpp highlight"><span class="filename">P1198 最大数.cpp</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cm">/*</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cm">Question: [JSOI2008] 最大数 (线段树维护区间最大值）</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="cm">Source: P1198</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="cm">Difficulty: Green</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="cm">Date: 2026/11/13</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="cm">做法：线段树</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="cm">*/</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="cp">#include</span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="cp">#define int long long</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">M</span><span class="o">=</span><span class="mi">200010</span><span class="p">;</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">t1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">cnt</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">M</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">];</span><span class="w">          </span><span class="c1">// 4 倍空间</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="kt">int</span><span class="w"> </span><span class="nf">lc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">;}</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="kt">int</span><span class="w"> </span><span class="nf">rc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">;}</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="kt">void</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">){</span><span class="w"> </span><span class="c1">// 把位置 l 的值改成 k（单点赋值）</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="n">R</span><span class="p">){</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">        </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">=</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="o">=</span><span class="n">L</span><span class="o">+</span><span class="p">(</span><span class="n">R</span><span class="o">-</span><span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">    </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">)],</span><span class="n">t</span><span class="p">[</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">)]);</span><span class="w">       </span><span class="c1">// 合并：取较大</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="p">}</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="kt">int</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">){</span><span class="w"> </span><span class="c1">// 查询 [l,r] 的最大值</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;=</span><span class="n">L</span><span class="o">&amp;&amp;</span><span class="n">R</span><span class="o">&lt;=</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="o">=</span><span class="n">L</span><span class="o">+</span><span class="p">(</span><span class="n">R</span><span class="o">-</span><span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ans</span><span class="o">=</span><span class="n">LLONG_MIN</span><span class="p">;</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">query</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">)),</span><span class="n">ans</span><span class="p">);</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="n">mid</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">query</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">)),</span><span class="n">ans</span><span class="p">);</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="p">}</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="kt">signed</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">    </span><span class="n">ios</span><span class="o">::</span><span class="n">sync_with_stdio</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">    </span><span class="n">cin</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">);</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="w">    </span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">m</span><span class="o">&gt;&gt;</span><span class="n">d</span><span class="p">;</span>
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">M</span><span class="o">*</span><span class="mi">4</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">LLONG_MIN</span><span class="p">;</span><span class="w"> </span><span class="c1">// 空位=负无穷，不参与比较</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">m</span><span class="o">--</span><span class="p">){</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">op</span><span class="p">;</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">        </span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">op</span><span class="o">&gt;&gt;</span><span class="n">input</span><span class="p">;</span>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="s">"A"</span><span class="p">){</span>
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="n">input</span><span class="o">%</span><span class="n">d</span><span class="o">+</span><span class="n">t1</span><span class="p">)</span><span class="o">%</span><span class="n">d</span><span class="p">;</span><span class="w">         </span><span class="c1">// 防负数取模</span>
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">+=</span><span class="n">d</span><span class="p">;</span>
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a><span class="w">            </span><span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a><span class="w">            </span><span class="n">add</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">             </span><span class="c1">// 插入 = 单点赋值</span>
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="s">"Q"</span><span class="p">){</span>
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a><span class="w">            </span><span class="n">t1</span><span class="o">=</span><span class="n">query</span><span class="p">(</span><span class="n">cnt</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="n">input</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// 末尾 input 个数</span>
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a><span class="w">            </span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">t1</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a><span class="p">}</span>
 </code></pre></div>
 
 
