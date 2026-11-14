@@ -1,1 +1,1 @@
-window.WIKI_DATES = {"ds/线段树.md": "2026-11-14", "writing.md": "2026-11-09", "contest/index.md": "2026-11-08", "ds/index.md": "2026-11-07", "math/index.md": "2026-11-07", "dp/index.md": "2026-11-07", "string/index.md": "2026-11-07", "graph/index.md": "2026-11-07"};
+window.WIKI_DATES = {"writing.md": "2026-11-14", "ds/线段树.md": "2026-11-14", "contest/index.md": "2026-11-08", "ds/index.md": "2026-11-07", "math/index.md": "2026-11-07", "dp/index.md": "2026-11-07", "string/index.md": "2026-11-07", "graph/index.md": "2026-11-07"};
