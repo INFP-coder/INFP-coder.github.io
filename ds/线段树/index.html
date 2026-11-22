@@ -2042,6 +2042,12 @@ g(a)=\frac{2^{k+2}-2^{\left\lfloor\frac{k}{2}\right\rfloor+1}-1}
 <li>乘积的单位元是 <strong>1</strong>（build 初始全 1，不是 0）</li>
 <li><strong>叶子赋值也要取模</strong>（<code>k%m</code>）：<span class="arithmatex">\(Q=1\)</span> 时没有合并，只在合并处取模会漏</li>
 </ul>
+<details class="danger">
+<summary>易错：build 左儿子是 (l,mid)，不是 (1,mid)</summary>
+<p>左儿子写成 <code>build(lc(id),1,mid)</code> 会让每次递归都「重新从 1 建一棵前缀树」，
+节点数从 <span class="arithmatex">\(O(n)\)</span> 膨胀到 <span class="arithmatex">\(O(n\log n)\)</span>：<span class="arithmatex">\(n\)</span> 小时恰好不炸（骗过样例），
+<span class="arithmatex">\(n\)</span> 稍大就数组越界 RE。2026/11/22 复刷踩中，已进错题本。</p>
+</details>
 <details class="note">
 <summary>参考代码</summary>
 <div class="language-cpp highlight"><span class="filename">P4588.cpp</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cm">/*</span>
