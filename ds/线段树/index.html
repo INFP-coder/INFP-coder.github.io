@@ -572,6 +572,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#p2184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2184 贪婪大陆
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1553,6 +1564,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#p2184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2184 贪婪大陆
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2104,6 +2126,100 @@ g(a)=\frac{2^{k+2}-2^{\left\lfloor\frac{k}{2}\right\rfloor+1}-1}
 <a id="__codelineno-6-52" name="__codelineno-6-52" href="#__codelineno-6-52"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-6-53" name="__codelineno-6-53" href="#__codelineno-6-53"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-6-54" name="__codelineno-6-54" href="#__codelineno-6-54"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h3 id="p2184">P2184 贪婪大陆<a class="headerlink" href="#p2184" title="此段链接">&para;</a></h3>
+<details class="note">
+<summary>题意</summary>
+<p>长度 <span class="arithmatex">\(n\)</span> 的区间，<span class="arithmatex">\(m\)</span> 次操作：</p>
+<ul>
+<li><code>1 l r</code>：埋一种新的地雷，覆盖 <span class="arithmatex">\([l,r]\)</span>；</li>
+<li><code>2 L R</code>：查询与 <span class="arithmatex">\([L,R]\)</span> <strong>相交</strong>的不同地雷种数。</li>
+</ul>
+<p><span class="arithmatex">\(n,m \le 10^5\)</span>。所有操作在线进行，没有撤销。</p>
+</details>
+<p>关键思路：</p>
+<ul>
+<li>一种雷 <span class="arithmatex">\([l,r]\)</span> 与查询区间 <span class="arithmatex">\([L,R]\)</span> 相交，当且仅当 <span class="arithmatex">\(l \le R\)</span> <strong>且</strong> <span class="arithmatex">\(r \ge L\)</span></li>
+<li>因此答案 = （左端点 <span class="arithmatex">\(\le R\)</span> 的雷数）<span class="arithmatex">\(-\)</span>（右端点 <span class="arithmatex">\(&lt; L\)</span> 的雷数）</li>
+<li>用<strong>两棵线段树</strong>分别计数：<code>tl</code> 在位置 <span class="arithmatex">\(l\)</span> 单点 +1（左端点），<code>tr</code> 在位置 <span class="arithmatex">\(r\)</span> 单点 +1（右端点）</li>
+<li>查询 = <code>tl</code> 的前缀和 <span class="arithmatex">\([1,R]\)</span> 减去 <code>tr</code> 的前缀和 <span class="arithmatex">\([1,L-1]\)</span>——全程只有<strong>单点加 + 前缀和查询</strong>，<strong>不需要 lazy</strong></li>
+</ul>
+<details class="example">
+<summary>为什么相交 ⇔ l≤R 且 r≥L</summary>
+<p>区间 <span class="arithmatex">\([l,r]\)</span> 与 <span class="arithmatex">\([L,R]\)</span> 相交，等价于两者<strong>不分离</strong>。不分离只有两种可能：</p>
+<ul>
+<li><span class="arithmatex">\(l &lt; L\)</span>：此时不分离 ⇔ <span class="arithmatex">\(r \ge L\)</span>（雷的右端跨进查询区间）</li>
+<li><span class="arithmatex">\(l \ge L\)</span>：此时不分离 ⇔ <span class="arithmatex">\(l \le R\)</span>（雷的左端在查询区间内或之前）</li>
+</ul>
+<p>合并两种情况即 <span class="arithmatex">\(l \le R\)</span> 且 <span class="arithmatex">\(r \ge L\)</span>。数「满足两个条件的雷数」不好直接数，
+于是用容斥：<span class="arithmatex">\(l \le R\)</span> 的雷数减去 <span class="arithmatex">\(r &lt; L\)</span>（<span class="arithmatex">\(r \ge L\)</span> 的补集）的雷数。</p>
+</details>
+<details class="danger">
+<summary>易错</summary>
+<ul>
+<li>答案是<strong>两个前缀和相减</strong>，不是两棵树逐节点相减（<code>tl[id]-tr[id]</code> 没有意义）</li>
+<li><code>query(tr,1,l-1,…)</code> 在 <span class="arithmatex">\(l=1\)</span> 时查询区间是 <span class="arithmatex">\([1,0]\)</span>——靠「不相交」判断返回 <span class="arithmatex">\(0\)</span>，天然正确</li>
+<li>两棵树代码完全一样，用数组参数 <code>add(int t[],…)</code> 一份代码共用，不要复制两份</li>
+</ul>
+</details>
+<details class="note">
+<summary>参考代码</summary>
+<div class="language-cpp highlight"><span class="filename">P2184.cpp</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="cm">/*</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="cm">Question: 贪婪大陆</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="cm">Source: P2184</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="cm">Difficulty: Blue</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="cm">Date: 2026/11/24</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="cm">做法：双线段树计数（左端点前缀和 − 右端点前缀和），无需 lazy</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="cm">*/</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="cp">#include</span><span class="cpf">&lt;bits/stdc++.h&gt;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="cp">#define int long long</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAXN</span><span class="o">=</span><span class="mi">100010</span><span class="p">;</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">;</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="kt">int</span><span class="w"> </span><span class="n">tl</span><span class="p">[</span><span class="n">MAXN</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">tr</span><span class="p">[</span><span class="n">MAXN</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">];</span><span class="w">   </span><span class="c1">// tl: 左端点计数 · tr: 右端点计数</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="kt">int</span><span class="w"> </span><span class="nf">lc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">;}</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="kt">int</span><span class="w"> </span><span class="nf">rc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">){</span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">;}</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="kt">void</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">[],</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">){</span><span class="w">   </span><span class="c1">// 单点 +1</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="n">R</span><span class="p">){</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">        </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="o">=</span><span class="n">L</span><span class="o">+</span><span class="p">(</span><span class="n">R</span><span class="o">-</span><span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">    </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">)]</span><span class="o">+</span><span class="n">t</span><span class="p">[</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">)];</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="p">}</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="kt">int</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">[],</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">){</span><span class="w">  </span><span class="c1">// 区间和（前缀和用）</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">&lt;</span><span class="n">L</span><span class="o">||</span><span class="n">R</span><span class="o">&lt;</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;=</span><span class="n">L</span><span class="o">&amp;&amp;</span><span class="n">R</span><span class="o">&lt;=</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="o">=</span><span class="n">L</span><span class="o">+</span><span class="p">(</span><span class="n">R</span><span class="o">-</span><span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">query</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">lc</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="o">+</span><span class="n">query</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">rc</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="p">}</span>
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="kt">signed</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="w">    </span><span class="n">ios</span><span class="o">::</span><span class="n">sync_with_stdio</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="w">    </span><span class="n">cin</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">);</span>
+<a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a><span class="w">    </span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="n">m</span><span class="p">;</span>
+<a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">m</span><span class="o">--</span><span class="p">){</span>
+<a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">q</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">;</span>
+<a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a><span class="w">        </span><span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">q</span><span class="o">&gt;&gt;</span><span class="n">l</span><span class="o">&gt;&gt;</span><span class="n">r</span><span class="p">;</span>
+<a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">q</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+<a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a><span class="w">            </span><span class="n">add</span><span class="p">(</span><span class="n">tl</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="c1">// 左端点 l 计数 +1</span>
+<a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a><span class="w">            </span><span class="n">add</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="c1">// 右端点 r 计数 +1</span>
+<a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a><span class="w">        </span><span class="k">else</span><span class="p">{</span>
+<a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="o">=</span><span class="n">query</span><span class="p">(</span><span class="n">tl</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="c1">// 左端点 ≤ r 的雷数</span>
+<a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="n">query</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">l</span><span class="mi">-1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// 右端点 &lt; l 的雷数</span>
+<a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="w">            </span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<a id="__codelineno-7-52" name="__codelineno-7-52" href="#__codelineno-7-52"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-7-53" name="__codelineno-7-53" href="#__codelineno-7-53"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-7-54" name="__codelineno-7-54" href="#__codelineno-7-54"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-7-55" name="__codelineno-7-55" href="#__codelineno-7-55"></a><span class="p">}</span>
 </code></pre></div>
 </details>
 <h2 id="_8">习题<a class="headerlink" href="#_8" title="此段链接">&para;</a></h2>
